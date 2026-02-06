@@ -1,0 +1,97 @@
+THEORY
+A stack is a linear data structure that follows the principle LIFO (Last In First Out).
+In a stack, insertion and deletion of elements take place only at one end called TOP.
+Basic Stack Operations
+Push – Inserts an element into the stack.
+Pop – Deletes the top element from the stack.
+Display – Displays all elements of the stack from top to bottom.
+Stack Conditions
+Overflow occurs when we try to insert an element into a full stack.
+Underflow occurs when we try to delete an element from an empty stack.
+In this program, the stack is implemented using dynamic memory allocation with malloc().
+ALGORITHM
+Algorithm for PUSH operation
+Start
+Check if top == size - 1
+If true, print Stack Overflow
+Else
+Increment top
+Store element at stack[top]
+Stop
+Algorithm for POP operation
+Start
+Check if top == -1
+If true, print Stack is empty
+Else
+Print element at stack[top]
+Decrement top
+Stop
+Algorithm for DISPLAY operation
+Start
+Check if top == -1
+If true, print Stack is empty
+Else
+Print elements from top to 0
+Stop
+PROGRAM
+Copy code
+C
+#include <stdio.h>
+#include <stdlib.h>
+
+int size = 5;
+int top = -1;
+int *stack;
+
+void push(int x) {
+    if (top == size - 1) {
+        printf("Stack Overflow\n");
+    } else {
+        top++;
+        stack[top] = x;
+    }
+}
+
+void pop() {
+    if (top == -1) {
+        printf("Stack is empty\n");
+    } else {
+        printf("Popped element: %d\n", stack[top]);
+        top--;
+    }
+}
+
+void display() {
+    if (top == -1) {
+        printf("Stack is empty\n");
+    } else {
+        printf("Stack elements:\n");
+        for (int i = top; i >= 0; i--) {
+            printf("%d ", stack[i]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    stack = (int *)malloc(size * sizeof(int));
+
+    push(10);
+    push(20);
+    display();
+
+    pop();
+    push(30);
+    display();
+
+    free(stack);
+    return 0;
+}
+OUTPUT
+Copy code
+
+Stack elements:
+20 10
+Popped element: 20
+Stack elements:
+30 10
