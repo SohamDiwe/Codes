@@ -1,0 +1,127 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Node structure */
+struct node
+{
+    int coeff;
+    int exp;
+    struct node *next;
+};
+
+/* Create new node */
+struct node* createNode(int c, int e)
+{
+    struct node *temp;
+    temp = (struct node*)malloc(sizeof(struct node));
+    temp->coeff = c;
+    temp->exp = e;
+    temp->next = NULL;
+    return temp;
+}
+
+/* Insert at end (single pointer version) */
+struct node* insertEnd(struct node *head, int c, int e)
+{
+    struct node *temp = createNode(c, e);
+
+    if (head == NULL)
+        return temp;
+
+    struct node *p = head;
+    while (p->next != NULL)
+        p = p->next;
+
+    p->next = temp;
+    return head;
+}
+
+/* Polynomial addition */
+struct node* polyAdd(struct node *P1, struct node *P2)
+{
+    struct node *result = NULL;
+
+    struct node *ptr1 = P1;
+    struct node *ptr2 = P2;
+
+    while (ptr1 != NULL && ptr2 != NULL)
+    {
+        if (ptr1->exp > ptr2->exp)
+        {
+            result = insertEnd(result, ptr1->coeff, ptr1->exp);
+            ptr1 = ptr1->next;
+        }
+        else if (ptr1->exp < ptr2->exp)
+        {
+            result = insertEnd(result, ptr2->coeff, ptr2->exp);
+            ptr2 = ptr2->next;
+        }
+        else
+        {
+            int sum = ptr1->coeff + ptr2->coeff;
+            if (sum != 0)
+                result = insertEnd(result, sum, ptr1->exp);
+
+            ptr1 = ptr1->next;
+            ptr2 = ptr2->next;
+        }
+    }
+
+    while (ptr1 != NULL)
+    {
+        result = insertEnd(result, ptr1->coeff, ptr1->exp);
+        ptr1 = ptr1->next;
+    }
+
+    while (ptr2 != NULL)
+    {
+        result = insertEnd(result, ptr2->coeff, ptr2->exp);
+        ptr2 = ptr2->next;
+    }
+
+    return result;
+}
+
+/* Display polynomial */
+void display(struct node *head)
+{
+    struct node *p = head;
+    while (p != NULL)
+    {
+        printf("%dx^%d", p->coeff, p->exp);
+        if (p->next != NULL)
+            printf(" + ");
+        p = p->next;
+    }
+    printf("\n");
+}
+
+/* Main */
+int main()
+{
+    struct node *P1 = NULL, *P2 = NULL, *P3 = NULL;
+
+    P1 = insertEnd(P1, 5, 3);
+    P1 = insertEnd(P1, 4, 2);
+    P1 = insertEnd(P1, 2, 0);
+
+    P2 = insertEnd(P2, 3, 3);
+    P2 = insertEnd(P2, 1, 1);
+    P2 = insertEnd(P2, 1, 0);
+
+    printf("First Polynomial: ");
+    display(P1);
+
+    printf("Second Polynomial: ");
+    display(P2);
+
+    P3 = polyAdd(P1, P2);
+
+    printf("Resultant Polynomial: ");
+    display(P3);
+
+    return 0;
+}
+First Polynomial: 5x^3 + 4x^2 + 2x^0
+Second Polynomial: 3x^3 + 1x^1 + 1x^0
+Resultant Polynomial: 8x^3 + 4x^2 + 1x^1 + 3x^0
