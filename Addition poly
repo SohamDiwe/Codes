@@ -1,0 +1,118 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Node structure */
+struct node {
+    int coeff;
+    int expo;
+    struct node *next;
+};
+
+/* Create a new node */
+struct node* createNode(int c, int e) {
+    struct node *newNode;
+    newNode = (struct node*)malloc(sizeof(struct node));
+    newNode->coeff = c;
+    newNode->expo = e;
+    newNode->next = NULL;
+    return newNode;
+}
+
+/* Insert node at end */
+struct node* insert(struct node *head, int c, int e) {
+    struct node *temp = head;
+    struct node *newNode = createNode(c, e);
+
+    if (head == NULL)
+        return newNode;
+
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+    return head;
+}
+
+/* Display polynomial */
+void display(struct node *head) {
+    if (head == NULL) {
+        printf("0\n");
+        return;
+    }
+
+    while (head != NULL) {
+        printf("%dx^%d", head->coeff, head->expo);
+        if (head->next != NULL)
+            printf(" + ");
+        head = head->next;
+    }
+    printf("\n");
+}
+
+/* Add two polynomials */
+struct node* addPoly(struct node *p1, struct node *p2) {
+    struct node *result = NULL;
+
+    while (p1 != NULL && p2 != NULL) {
+        if (p1->expo == p2->expo) {
+            result = insert(result, p1->coeff + p2->coeff, p1->expo);
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+        else if (p1->expo > p2->expo) {
+            result = insert(result, p1->coeff, p1->expo);
+            p1 = p1->next;
+        }
+        else {
+            result = insert(result, p2->coeff, p2->expo);
+            p2 = p2->next;
+        }
+    }
+
+    /* Copy remaining terms */
+    while (p1 != NULL) {
+        result = insert(result, p1->coeff, p1->expo);
+        p1 = p1->next;
+    }
+
+    while (p2 != NULL) {
+        result = insert(result, p2->coeff, p2->expo);
+        p2 = p2->next;
+    }
+
+    return result;
+}
+
+/* Main function */
+int main() {
+    struct node *poly1 = NULL;
+    struct node *poly2 = NULL;
+    struct node *sum = NULL;
+
+    /* Polynomial 1: 5x^2 + 4x^1 + 2 */
+    poly1 = insert(poly1, 5, 2);
+    poly1 = insert(poly1, 4, 1);
+    poly1 = insert(poly1, 2, 0);
+
+    /* Polynomial 2: 3x^2 + 1x^1 + 6 */
+    poly2 = insert(poly2, 3, 2);
+    poly2 = insert(poly2, 1, 1);
+    poly2 = insert(poly2, 6, 0);
+
+    printf("Polynomial 1: ");
+    display(poly1);
+
+    printf("Polynomial 2: ");
+    display(poly2);
+
+    sum = addPoly(poly1, poly2);
+
+    printf("Sum of Polynomials: ");
+    display(sum);
+
+    return 0;
+}
+
+Polynomial 1: 5x^2 + 4x^1 + 2x^0
+Polynomial 2: 3x^2 + 1x^1 + 6x^0
+Sum of Polynomials: 8x^2 + 5x^1 + 8x^0
