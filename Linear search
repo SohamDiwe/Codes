@@ -1,0 +1,66 @@
+Linear Search – Algorithm Theory
+Linear Search is a simple searching technique used to find an element in a list.
+It checks each element one by one until the required element is found or the list ends.
+Idea
+Start searching from the first element.
+Compare the key with each element of the array.
+If a match is found, return the position.
+If the end of the array is reached and no match is found, the search is unsuccessful.
+Algorithm (Step-by-Step)
+Read the array elements.
+Read the element to be searched (key).
+Start from the first element.
+Compare each element with key.
+If found, display the position.
+If not found after checking all elements, display “Element not found”.
+Pseudocode
+Copy code
+
+LinearSearch(A, n, key)
+for i = 0 to n-1
+    if A[i] == key
+        return i
+return -1
+Program Code (C Language)
+Copy code
+C
+#include <stdio.h>
+
+int main() {
+    int a[50], n, i, key, found = 0;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter elements:\n");
+    for(i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+
+    printf("Enter element to search: ");
+    scanf("%d", &key);
+
+    for(i = 0; i < n; i++) {
+        if(a[i] == key) {
+            printf("Element found at position %d", i + 1);
+            found = 1;
+            break;
+        }
+    }
+
+    if(found == 0)
+        printf("Element not found");
+
+    return 0;
+}
+Time & Space Complexity
+Best Case: O(1)
+Average Case: O(n)
+Worst Case: O(n)
+Space Complexity: O(1)
+Advantages
+Very simple and easy to implement
+Works on unsorted arrays
+No extra memory required
+Disadvantages
+Slow for large datasets
+Inefficient compared to binary search
