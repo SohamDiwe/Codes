@@ -1,0 +1,94 @@
+QUEUE USING ARRAY
+AIM
+To implement a Queue using Array and perform Insert (Enqueue), Delete (Dequeue) and Display operations.
+THEORY
+A Queue is a linear data structure that follows the principle FIFO (First In First Out).
+Insertion of elements takes place at the rear end, and deletion of elements takes place at the front end.
+Queue Operations
+Insert (Enqueue) – Adds an element at the rear.
+Delete (Dequeue) – Removes an element from the front.
+Display – Displays all elements of the queue.
+Queue Conditions
+Overflow: When rear == MAX - 1
+Underflow: When front == -1 or front > rear
+ALGORITHM
+Algorithm for INSERT (Enqueue)
+Start
+If rear == MAX - 1, print Queue Overflow
+Else
+If front == -1, set front = 0
+Increment rear
+Insert element at queue[rear]
+Stop
+Algorithm for DELETE (Dequeue)
+Start
+If front == -1 OR front > rear, print Queue Underflow
+Else
+Print element at queue[front]
+Increment front
+Stop
+Algorithm for DISPLAY
+Start
+If front == -1 OR front > rear, print Queue is empty
+Else
+Display elements from front to rear
+Stop
+PROGRAM
+Copy code
+C
+#include <stdio.h>
+#define MAX 5
+
+int queue[MAX];
+int front = -1;
+int rear = -1;
+
+void insert(int x) {
+    if (rear == MAX - 1) {
+        printf("Queue Overflow\n");
+    } else {
+        if (front == -1)
+            front = 0;
+        rear++;
+        queue[rear] = x;
+    }
+}
+
+void delete() {
+    if (front == -1 || front > rear) {
+        printf("Queue Underflow\n");
+    } else {
+        printf("Deleted element: %d\n", queue[front]);
+        front++;
+    }
+}
+
+void display() {
+    int i;
+    if (front == -1 || front > rear) {
+        printf("Queue is empty\n");
+    } else {
+        printf("Queue elements:\n");
+        for (i = front; i <= rear; i++) {
+            printf("%d ", queue[i]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    insert(10);
+    insert(20);
+    insert(30);
+
+    delete();
+    display();
+
+    return 0;
+}
+OUTPUT
+Copy code
+
+Deleted element: 10
+Queue elements:
+20 30
