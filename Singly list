@@ -1,0 +1,132 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+/* Insert at start */
+struct node* insert_start(struct node *head, int value) {
+    struct node *ptr;
+    ptr = (struct node*)malloc(sizeof(struct node));
+    ptr->data = value;
+    ptr->next = head;
+    return ptr;
+}
+
+/* Insert at end */
+struct node* insert_end(struct node *head, int value) {
+    struct node *ptr, *p;
+    ptr = (struct node*)malloc(sizeof(struct node));
+    ptr->data = value;
+    ptr->next = NULL;
+
+    if (head == NULL)
+        return ptr;
+
+    p = head;
+    while (p->next != NULL)
+        p = p->next;
+
+    p->next = ptr;
+    return head;
+}
+
+/* Insert at middle (after position) */
+struct node* insert_middle(struct node *head, int value, int pos) {
+    struct node *ptr, *p;
+    ptr = (struct node*)malloc(sizeof(struct node));
+    ptr->data = value;
+
+    p = head;
+    for (int i = 1; i < pos; i++)
+        p = p->next;
+
+    ptr->next = p->next;
+    p->next = ptr;
+
+    return head;
+}
+
+/* Delete at start */
+struct node* delete_start(struct node *head) {
+    struct node *p;
+    p = head;
+    head = head->next;
+    free(p);
+    return head;
+}
+
+/* Delete at end */
+struct node* delete_end(struct node *head) {
+    struct node *p, *prev;
+    p = head;
+
+    while (p->next != NULL) {
+        prev = p;
+        p = p->next;
+    }
+
+    prev->next = NULL;
+    free(p);
+    return head;
+}
+
+/* Delete at middle (position) */
+struct node* delete_middle(struct node *head, int pos) {
+    struct node *p, *prev;
+    p = head;
+
+    for (int i = 1; i < pos; i++) {
+        prev = p;
+        p = p->next;
+    }
+
+    prev->next = p->next;
+    free(p);
+    return head;
+}
+
+/* Display */
+struct node* display(struct node *head) {
+    struct node *p;
+    p = head;
+
+    while (p != NULL) {
+        printf("%d -> ", p->data);
+        p = p->next;
+    }
+    printf("NULL\n");
+    return head;
+}
+
+int main() {
+    struct node *head = NULL;
+
+    head = insert_start(head, 10);
+    head = insert_end(head, 20);
+    head = insert_end(head, 30);
+
+    display(head);
+
+    head = insert_middle(head, 15, 1);
+    display(head);
+
+    head = delete_start(head);
+    display(head);
+
+    head = delete_middle(head, 2);
+    display(head);
+
+    head = delete_end(head);
+    display(head);
+
+    return 0;
+}
+output 
+10 -> 20 -> 30 -> NULL
+10 -> 15 -> 20 -> 30 -> NULL
+15 -> 20 -> 30 -> NULL
+15 -> 30 -> NULL
+15 -> NULL
